@@ -1,0 +1,70 @@
+{
+  "Version": 1,
+  "WorkspaceRootPath": "C:\\Users\\06823\\Documents\\Visual Studio 2013\\Projects\\CalculatorApp\\",
+  "Documents": [
+    {
+      "AbsoluteMoniker": "D:0:0:{7F390ADB-FD95-481C-9407-4537D8CF53B2}|CalculatorApp\\CalculatorApp.csproj|c:\\users\\06823\\documents\\visual studio 2013\\projects\\calculatorapp\\calculatorapp\\form1.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{7F390ADB-FD95-481C-9407-4537D8CF53B2}|CalculatorApp\\CalculatorApp.csproj|solutionrelative:calculatorapp\\form1.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{7F390ADB-FD95-481C-9407-4537D8CF53B2}|CalculatorApp\\CalculatorApp.csproj|C:\\Users\\06823\\Documents\\Visual Studio 2013\\Projects\\CalculatorApp\\calculatorapp\\form1.designer.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{7F390ADB-FD95-481C-9407-4537D8CF53B2}|CalculatorApp\\CalculatorApp.csproj|solutionrelative:calculatorapp\\form1.designer.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{7F390ADB-FD95-481C-9407-4537D8CF53B2}|CalculatorApp\\CalculatorApp.csproj|C:\\Users\\06823\\Documents\\Visual Studio 2013\\Projects\\CalculatorApp\\calculatorapp\\form1.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}|Form",
+      "RelativeMoniker": "D:0:0:{7F390ADB-FD95-481C-9407-4537D8CF53B2}|CalculatorApp\\CalculatorApp.csproj|solutionrelative:calculatorapp\\form1.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}|Form"
+    }
+  ],
+  "DocumentGroupContainers": [
+    {
+      "Orientation": 0,
+      "VerticalTabListWidth": 256,
+      "DocumentGroups": [
+        {
+          "DockedWidth": 200,
+          "SelectedChildIndex": 2,
+          "Children": [
+            {
+              "$type": "Document",
+              "DocumentIndex": 2,
+              "Title": "Form1.cs [\u30C7\u30B6\u30A4\u30F3]",
+              "DocumentMoniker": "C:\\Users\\06823\\Documents\\Visual Studio 2013\\Projects\\CalculatorApp\\CalculatorApp\\Form1.cs",
+              "RelativeDocumentMoniker": "CalculatorApp\\Form1.cs",
+              "ToolTip": "C:\\Users\\06823\\Documents\\Visual Studio 2013\\Projects\\CalculatorApp\\CalculatorApp\\Form1.cs [\u30C7\u30B6\u30A4\u30F3]",
+              "RelativeToolTip": "CalculatorApp\\Form1.cs [\u30C7\u30B6\u30A4\u30F3]",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-08-29T00:09:11.895Z",
+              "EditorCaption": " [\u30C7\u30B6\u30A4\u30F3]"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 1,
+              "Title": "Form1.Designer.cs",
+              "DocumentMoniker": "C:\\Users\\06823\\Documents\\Visual Studio 2013\\Projects\\CalculatorApp\\CalculatorApp\\Form1.Designer.cs",
+              "RelativeDocumentMoniker": "CalculatorApp\\Form1.Designer.cs",
+              "ToolTip": "C:\\Users\\06823\\Documents\\Visual Studio 2013\\Projects\\CalculatorApp\\CalculatorApp\\Form1.Designer.cs",
+              "RelativeToolTip": "CalculatorApp\\Form1.Designer.cs",
+              "ViewState": "AgIAAAEAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-08-29T00:08:52.923Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 0,
+              "Title": "Form1.cs",
+              "DocumentMoniker": "C:\\Users\\06823\\Documents\\Visual Studio 2013\\Projects\\CalculatorApp\\CalculatorApp\\Form1.cs",
+              "RelativeDocumentMoniker": "CalculatorApp\\Form1.cs",
+              "ToolTip": "C:\\Users\\06823\\Documents\\Visual Studio 2013\\Projects\\CalculatorApp\\CalculatorApp\\Form1.cs",
+              "RelativeToolTip": "CalculatorApp\\Form1.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAABIAAAAoAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-08-29T00:08:51.505Z",
+              "EditorCaption": ""
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}

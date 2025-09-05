@@ -1,0 +1,1 @@
+c:\users\06823\documents\visual studio 2013\Projects\CalculatorFormsApplication\CalculatorFormsApplication\bin\Debug\CalculatorFormsApplication.exe.config
