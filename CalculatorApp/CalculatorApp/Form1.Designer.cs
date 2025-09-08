@@ -54,7 +54,7 @@
             this.btnTopMost = new System.Windows.Forms.Button();
             this.textResult = new System.Windows.Forms.TextBox();
             this.textExpression = new System.Windows.Forms.TextBox();
-            this.tableLayoutPanel1.SuspendLayout();
+			//this.tableLayoutPanel1.SuspendLayout();
             this.SuspendLayout();
             // 
             // button1
@@ -129,7 +129,7 @@
             this.tableLayoutPanel1.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 20F));
             this.tableLayoutPanel1.Size = new System.Drawing.Size(304, 330);
             this.tableLayoutPanel1.TabIndex = 6;
-            this.tableLayoutPanel1.Paint += new System.Windows.Forms.PaintEventHandler(this.tableLayoutPanel1_Paint);
+			//this.tableLayoutPanel1.Paint += new System.Windows.Forms.PaintEventHandler(this.tableLayoutPanel1_Paint);
             // 
             // btnTogglesign
             // 
@@ -336,19 +336,19 @@
             // 
             // textResult
             // 
-            this.textResult.Font = new System.Drawing.Font("Segoe UI", 30F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.textResult.Location = new System.Drawing.Point(3, 117);
+            this.textResult.Font = new System.Drawing.Font("Segoe UI", 36F, System.Drawing.FontStyle.Bold);
+            this.textResult.Location = new System.Drawing.Point(4, 107);
             this.textResult.Name = "textResult";
-            this.textResult.Size = new System.Drawing.Size(300, 61);
+            this.textResult.Size = new System.Drawing.Size(300, 71);
             this.textResult.TabIndex = 10;
             this.textResult.TextChanged += new System.EventHandler(this.textResult_TextChanged);
             // 
             // textExpression
             // 
-            this.textExpression.Font = new System.Drawing.Font("Segoe UI", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.textExpression.Location = new System.Drawing.Point(3, 92);
+            this.textExpression.Font = new System.Drawing.Font("Segoe UI", 10F);
+            this.textExpression.Location = new System.Drawing.Point(4, 76);
             this.textExpression.Name = "textExpression";
-            this.textExpression.Size = new System.Drawing.Size(300, 23);
+            this.textExpression.Size = new System.Drawing.Size(300, 25);
             this.textExpression.TabIndex = 11;
             this.textExpression.TextChanged += new System.EventHandler(this.textExpression_TextChanged);
             // 

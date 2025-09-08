@@ -6,5 +6,4 @@ C:\Users\06823\Documents\Visual Studio 2013\Projects\CalculatorApp\CalculatorApp
 C:\Users\06823\Documents\Visual Studio 2013\Projects\CalculatorApp\CalculatorApp\obj\Debug\CalculatorApp.csproj.GenerateResource.Cache
 C:\Users\06823\Documents\Visual Studio 2013\Projects\CalculatorApp\CalculatorApp\obj\Debug\CalculatorApp.exe
 C:\Users\06823\Documents\Visual Studio 2013\Projects\CalculatorApp\CalculatorApp\obj\Debug\CalculatorApp.pdb
-C:\Users\06823\Documents\Visual Studio 2013\Projects\CalculatorApp\CalculatorApp\obj\Debug\CalculatorApp.csproj.AssemblyReference.cache
-C:\Users\06823\Documents\Visual Studio 2013\Projects\CalculatorApp\CalculatorApp\obj\Debug\CalculatorApp.csproj.CoreCompileInputs.cache
+C:\Users\06823\Documents\Visual Studio 2013\Projects\CalculatorApp\CalculatorApp\obj\Debug\CalculatorApp.csprojResolveAssemblyReference.cache
