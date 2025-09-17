@@ -6,173 +6,137 @@ using System.Text.RegularExpressions;
 
 namespace CalculatorApp
 {
+	/// <summary>
+	/// アプリ全体で使用する定数をカテゴリごとに整理
+	/// </summary>
+	internal static class Constants
+	{
+		/// <summary>フォント関連の定数</summary>
+		internal static class FontSize
+		{
+			/// <summary>エラーメッセージフォントサイズ</summary>
+			internal const float ERROR_MESSAGE = 20.0f;
+
+			/// <summary>計算結果表示欄の基準フォントサイズ</summary>
+			internal const float RESULT_DISPLAY_BASE = 36f;
+
+			/// <summary>途中計算結果欄の基準フォントサイズ</summary>
+			internal const float EXPRESSION_DISPLAY_BASE = 10f;
+
+			/// <summary>フォントの下限サイズ</summary>
+			internal const float MIN_LIMIT = 14f;
+
+			/// <summary>フォントの縮小幅</summary>
+			internal const float REDUCTION_STEP = 0.5f;
+
+			/// <summary>フォント更新時の差分許容（EPS）</summary>
+			internal const float SIZE_EPSILON = 0.1f;
+		}
+
+		/// <summary>演算子記号の定数</summary>
+		internal static class Symbol
+		{
+			/// <summary>加算</summary>
+			internal const string ADD = "+";
+
+			/// <summary>減算</summary>
+			internal const string SUBTRACT = "-";
+
+			/// <summary>乗算</summary>
+			internal const string MULTIPLY = "×"; // ボタン表記の都合で × も許可
+
+			/// <summary>除算</summary>
+			internal const string DIVIDE = "÷";   // 同上 ÷ も許可
+
+			/// <summary>等号</summary>
+			internal const string EQUAL = "=";
+
+		}
+
+		/// <summary>数値や表示桁に関する定数</summary>
+		internal static class Numeric
+		{
+			/// <summary>初期値 0</summary>
+			internal const decimal INITIAL_VALUE = 0m;
+
+			/// <summary>表示用ゼロ</summary>
+			public const string ZERO_VALUE = "0";
+
+			/// <summary>％→小数 乗数</summary>
+			internal const decimal PERCENT_MULTIPLY = 0.01m;
+
+			/// <summary>整数部の最大表示桁数</summary>
+			internal const int MAX_INTEGER_DISPLAY_DIGITS = 16;
+
+			/// <summary>0.から始まる場合の最大表示桁数</summary>
+			internal const int MAX_FRACTION_DISPLAY_DIGITS_LEADING_ZERO = 17;
+
+			public const int MAX_TOTAL_FRACTION_DIGITS = 15; // ← 追加
+
+			public const int MAX_SIGNIFICANT_DIGITS = 17; // ← NEW!
+		}
+
+		/// <summary>エラーメッセージ</summary>
+		internal static class ErrorMessage
+		{
+			internal const string OVERFLOW = "計算範囲を超えました";
+			internal const string DIVIDE_BY_ZERO = "0で割ることはできません";
+			internal const string UNDEFINED = "結果が定義されていません";
+		}
+
+		/// <summary>特殊表示</summary>
+		internal static class SpecialDisplay
+		{
+			internal const string NEGATE_FUNCTION = "negate";
+		}
+	}
+
 	public partial class Form1 : Form
 	{
-		/// <summary>
-		/// 最初の値を保持する変数
-		/// </summary>
-		private decimal FirstValue = 0;
+		/// <summary>最初の値</summary>
+		private decimal FirstValue = 0m;
 
-		/// <summary>
-		/// 2番目の値を保持する変数
-		/// </summary>
-		private decimal SecondValue = 0;
+		/// <summary>2番目の値</summary>
+		private decimal SecondValue = 0m;
 
-		/// <summary>
-		/// テキストボックスの上書きモードを示すフラグ
-		/// </summary>
+		/// <summary>結果欄の上書き入力フラグ</summary>
 		private bool TextOverwrite = false;
 
-		/// <summary>
-		/// 小数点が入力されているかを示すフラグ。
-		/// </summary>
+		/// <summary>小数点入力済みフラグ</summary>
 		private bool NumDot = false;
 
-		/// <summary>
-		/// 加算演算子の記号
-		/// </summary>
-		private const string ADD_SYMBOL = "+";
-
-		/// <summary>
-		/// 減算演算子の記号
-		/// </summary>
-		private const string SUBTRACT_SYMBOL = "-";
-
-		/// <summary>
-		/// 乗算演算子の記号
-		/// </summary>
-		private const string MULTIPLY_SYMBOL = "×";
-
-		/// <summary>
-		/// 除算演算子の記号</summary>
-		private const string DIVIDE_SYMBOL = "÷";
-
-		/// <summary>
-		/// 等号演算子の記号
-		/// </summary>
-		private const string EQUAL_SYMBOL = "=";
-
-		/// <summary>
-		/// 初期値:0
-		/// </summary>
-		private const decimal INITIAL_VALUE = 0m;
-
-		/// <summary>
-		/// 表示値:0
-		/// </summary>
-		private const string ZERO_VALUE = "0";
-
-		/// <summary>
-		/// ％を小数に変換する乗数
-		/// </summary>
-		private const decimal PERCENT_MULTIPLY = 0.01m;
-
-		/// <summary>
-		/// エラーメッセージフォントサイズ
-		/// </summary>
-		private const float ERROR_FONT_SIZE = 20.0f;
-
-		/// <summary>
-		/// オーバフローが発生したときのエラーメッセージ
-		/// </summary>
-		private const string ERROR_MESSAGE_OVERFLOW = "計算範囲を超えました";
-
-		/// <summary>
-		/// 0除算が発生したときのエラーメッセージ
-		/// </summary>
-		private const string ERROR_MASSAGE_DIVIDE_BY_ZERO = "0で割ることはできません";
-
-		/// <summary>
-		/// 0÷0が行われた時のエラーメッセージ
-		/// </summary>
-		private const string ERROR_MASSAGE_UNDEFINED = "結果が定義されていません";
-
-		/// <summary>
-		/// サインチェンジキーを入力した際に表示される途中結果表示欄のnegate
-		/// </summary>
-		private const string NEGATE_DISPLAY_FUNCTION = "negate";
-
-		private bool IsNegated = false;
-
-		/// <summary>
-		/// 表示桁数
-		/// </summary>
-		private const int MAX_INTEGER_DISPLAY_DIGITS = 16;
-
-		/// <summary>
-		/// 0.から始まる場合の表示桁数
-		/// </summary>
-		private const int MAX_FRACTION_DISPLAY_DIGITS_LEADING_ZERO = 17;
-
-		/// <summary>
-		/// 計算結果表示欄の基準フォントサイズ
-		/// </summary>
-		private const float RESULT_DISPLAY_BASE_FONT_SIZE = 36f;
-
-		/// <summary>
-		/// 途中計算結果欄の基準フォントサイズ
-		/// </summary>
-		private const float EXPRESSION_DISPLAY_BASE_FONT_SIZE = 10f;
-
-		/// <summary>
-		/// フォントの下限サイズ
-		/// </summary>
-		private const float MIN_FONT_SIZE_LIMIT = 14f;
-
-		/// <summary>
-		/// フォントの縮小幅
-		/// </summary>
-		private const float FONT_SIZE_REDUCTION_STEP = 0.5f;
-
-		/// <summary>
-		/// 計算結果表示欄の現在のフォントサイズ
-		/// </summary>
-		private float defaultFontSize;
-
-		/// <summary>
-		/// 途中計算表示欄の現在のフォントサイズ
-		/// </summary>
-		private float defaultExpressionFontSize;
-
-		/// <summary>
-		/// エラー判定フラグ
-		/// </summary>
+		/// <summary>エラー状態</summary>
 		private bool IsErrorState = false;
 
-		/// <summary>
-		/// 現在の表示内容をクリアして新しい値を入力するかどうかを示すフラグ
-		/// </summary>
+		/// <summary>現在の入力を CE でクリアしたか</summary>
 		private bool IsClearEntry = false;
 
-		/// <summary>
-		/// 電卓の画面に現在表示されている数値を保持
-		/// </summary>
-		private decimal DisplayValue = INITIAL_VALUE;
+		/// <summary>内部の現在表示値（表示文字列と分離）</summary>
+		private decimal DisplayValue = Constants.Numeric.INITIAL_VALUE;
 
-		/// <summary>
-		/// サインチェンジキーを押したときの、末端のゼロや小数点の状態を保持するか判定するためのフラグ
-		/// </summary>
+		/// <summary>±押下時にフォーマット保持するか</summary>
 		private bool PreserveFormatOnToggle = false;
 
-		/// <summary>
-		/// 入力した文字列を保持
-		/// </summary>
-		private string lastUserTypedRaw = ZERO_VALUE;
+		/// <summary>直近のユーザー生入力（カンマなし）</summary>
+		private string lastUserTypedRaw = Constants.Numeric.ZERO_VALUE;
 
-		/// <summary>
-		/// 直前の操作がパーセントキーだったかどうかを示すフラグ
-		/// </summary>
+		/// <summary>直前が％か</summary>
 		private bool lastActionWasPercent = false;
 
-		/// <summary>
-		/// エラー時に操作無効なキー
-		/// </summary>
-		private Button[] DisabledButtonsOnError;
-
-		/// <summary>
-		/// 
-		/// </summary>
+		/// <summary>＝直後に途中式を消したか</summary>
 		private bool ClearedExprAfterEqual = false;
+
+		/// <summary>基準フォントサイズ（初期値）</summary>
+		private float defaultFontSize;
+
+		/// <summary>途中式欄の基準フォントサイズ（初期値）</summary>
+		private float defaultExpressionFontSize;
+
+		/// <summary>±直近押下</summary>
+		private bool isNegated = false;
+
+		/// <summary>エラー時に無効化するボタン（＝は含めない）</summary>
+		private Button[] DisabledButtonsOnError;
 
 		/// <summary>
 		/// 演算子の種類を定義する列挙型
@@ -224,11 +188,11 @@ namespace CalculatorApp
 		/// <param name="e">イベントデータ</param>
 		private void Form1_Load(object sender, EventArgs e)
 		{
-			textResult.Text = ZERO_VALUE;
+			textResult.Text = Constants.Numeric.ZERO_VALUE;
 			TextOverwrite = true;
 
-			textResult.Font = new Font(textResult.Font.FontFamily, RESULT_DISPLAY_BASE_FONT_SIZE, textResult.Font.Style);
-			textExpression.Font = new Font(textExpression.Font.FontFamily, EXPRESSION_DISPLAY_BASE_FONT_SIZE, textExpression.Font.Style);
+			textResult.Font = new Font(textResult.Font.FontFamily, Constants.FontSize.RESULT_DISPLAY_BASE, textResult.Font.Style);
+			textExpression.Font = new Font(textExpression.Font.FontFamily, Constants.FontSize.EXPRESSION_DISPLAY_BASE, textExpression.Font.Style);
 
 			// 基準サイズの保持
 			defaultFontSize = textResult.Font.Size;
@@ -272,7 +236,7 @@ namespace CalculatorApp
 		/// <param name="e">イベントデータ</param>
 		private void btnNum_Click(object sender, EventArgs e)
 		{
-			Button btn = sender as Button;
+			var btn = sender as Button;
 			if (btn == null)
 			{
 				return;
@@ -302,34 +266,33 @@ namespace CalculatorApp
 		/// <param name="e">イベントデータ</param>
 		private void btnOperation_Click(object sender, EventArgs e)
 		{
-			Button btn = (Button)sender;
-			OperatorType op = OperatorType.NON;
+			var btn = sender as Button;
+			if (btn == null) return;
+
+			var op = OperatorType.NON;
 
 			switch (btn.Text)
 			{
-				case ADD_SYMBOL:
-					{
-						op = OperatorType.ADD;
-						break;
-					}
-				case SUBTRACT_SYMBOL:
-					{
-						op = OperatorType.SUBTRACT;
-						break;
-					}
-				case MULTIPLY_SYMBOL:
-					{
-						op = OperatorType.MULTIPLY;
-						break;
-					}
-				case DIVIDE_SYMBOL:
-					{
-						op = OperatorType.DIVIDE;
-						break;
-					}
+				case Constants.Symbol.ADD:
+					op = OperatorType.ADD;
+					break;
+
+				case Constants.Symbol.SUBTRACT:
+					op = OperatorType.SUBTRACT;
+					break;
+
+				case Constants.Symbol.MULTIPLY:
+					op = OperatorType.MULTIPLY;
+					break;
+
+				case Constants.Symbol.DIVIDE:
+					op = OperatorType.DIVIDE;
+					break;
 			}
+
 			OnOperatorButton(op);
 		}
+
 
 		/// <summary>
 		/// イコールキー入力時の処理
@@ -418,7 +381,7 @@ namespace CalculatorApp
 				NumDot = false;
 			}
 
-			string current = textResult.Text.Replace(",", "");
+			var current = textResult.Text.Replace(",", "");
 			if (!IsInputValid(current, digit))
 			{
 				return;
@@ -487,7 +450,7 @@ namespace CalculatorApp
 			{
 				if (lastActionWasPercent && currentOperatorType != OperatorType.NON && !ExpressionEndsWithEqual())
 				{
-					decimal cur = GetCurrentValue();
+					var cur = GetCurrentValue();
 					PerformPendingCalculation(cur);
 					if (IsError())
 					{
@@ -521,7 +484,7 @@ namespace CalculatorApp
 				}
 				else
 				{
-					decimal currentValue = GetCurrentValue();
+					var currentValue = GetCurrentValue();
 					PerformPendingCalculation(currentValue);
 					if (IsError())
 					{
@@ -540,7 +503,7 @@ namespace CalculatorApp
 			}
 			catch (OverflowException)
 			{
-				SetErrorState(ERROR_MESSAGE_OVERFLOW);
+				SetErrorState(Constants.ErrorMessage.OVERFLOW);
 			}
 		}
 
@@ -557,7 +520,7 @@ namespace CalculatorApp
 
 			try
 			{
-				decimal result = ProcessEqualsLogic();
+				var result = ProcessEqualsLogic();
 				if (IsError())
 				{
 					return;
@@ -573,7 +536,7 @@ namespace CalculatorApp
 			}
 			catch (OverflowException)
 			{
-				SetErrorState(ERROR_MESSAGE_OVERFLOW);
+				SetErrorState(Constants.ErrorMessage.OVERFLOW);
 			}
 		}
 
@@ -593,11 +556,11 @@ namespace CalculatorApp
 			{
 				try
 				{
-					decimal r = GetCurrentValue();
-					decimal v = r * CalculatePercent(r);
+					var r = GetCurrentValue();
+					var v = r * CalculatePercent(r);
 
 					FirstValue = v;
-					SecondValue = INITIAL_VALUE;
+					SecondValue = Constants.Numeric.INITIAL_VALUE;
 					currentOperatorType = OperatorType.NON;
 
 					DisplayNumber(v, true);
@@ -609,15 +572,15 @@ namespace CalculatorApp
 				}
 				catch (OverflowException)
 				{
-					SetErrorState(ERROR_MESSAGE_OVERFLOW);
+					SetErrorState(Constants.ErrorMessage.OVERFLOW);
 					return;
 				}
 			}
 
 			if (currentOperatorType != OperatorType.NON)
 			{
-				decimal rhs = TextOverwrite ? 0m : GetCurrentValue();
-				decimal percentValue = CalculatePercent(rhs); 
+				var rhs = TextOverwrite ? 0m : GetCurrentValue();
+				var percentValue = CalculatePercent(rhs); 
 				UpdatePercentDisplay(percentValue);           
 
 				lastActionWasPercent = true;
@@ -628,13 +591,13 @@ namespace CalculatorApp
 			
 			try
 			{
-				decimal result = 0m;
+				var result = 0m;
 				DisplayNumber(result, true);
 				textExpression.Text = "0";
 
 				// 計算状態をリセット
 				FirstValue = result;
-				SecondValue = INITIAL_VALUE;
+				SecondValue = Constants.Numeric.INITIAL_VALUE;
 				currentOperatorType = OperatorType.NON;
 
 				lastActionWasPercent = true;
@@ -643,7 +606,7 @@ namespace CalculatorApp
 			}
 			catch (OverflowException)
 			{
-				SetErrorState(ERROR_MESSAGE_OVERFLOW);
+				SetErrorState(Constants.ErrorMessage.OVERFLOW);
 				return;
 			}
 		}
@@ -660,7 +623,7 @@ namespace CalculatorApp
 				return;
 			}
 
-			string currentExpression = textExpression.Text != null ? textExpression.Text.Trim() : string.Empty;
+			var currentExpression = textExpression.Text != null ? textExpression.Text.Trim() : string.Empty;
 
 			if (ExpressionEndsWithEqual())
 			{
@@ -692,52 +655,27 @@ namespace CalculatorApp
 				return false;
 			}
 
-			int eq = expr.LastIndexOf(EQUAL_SYMBOL);
+			int eq = expr.LastIndexOf(Constants.Symbol.EQUAL);
+			string body = (eq >= 0) ? expr.Substring(0, eq) : expr;
 
-			string body;
-			if (eq >= 0)
-			{
-				body = expr.Substring(0, eq);
-			}
-			else
-			{
-				body = expr;
-			}
-
-			if (body.IndexOf(" " + ADD_SYMBOL + " ", StringComparison.Ordinal) >= 0)
-			{
-				return true;
-			}
-
-			if (body.IndexOf(" " + SUBTRACT_SYMBOL + " ", StringComparison.Ordinal) >= 0)
-			{
-				return true;
-			}
-
-			if (body.IndexOf(" " + MULTIPLY_SYMBOL + " ", StringComparison.Ordinal) >= 0)
-			{
-				return true;
-			}
-
-			if (body.IndexOf(" " + DIVIDE_SYMBOL + " ", StringComparison.Ordinal) >= 0)
-			{
-				return true;
-			}
-
-			return false;
+			return body.Contains(Constants.Symbol.ADD) ||
+				   body.Contains(Constants.Symbol.SUBTRACT) ||
+				   body.Contains(Constants.Symbol.MULTIPLY) ||
+				   body.Contains(Constants.Symbol.DIVIDE);
 		}
+
 
 		/// <summary>
 		/// 電卓の表示を'0'に設定
 		/// </summary>
 		private void DisplayZeroResult()
 		{
-			textResult.Text = ZERO_VALUE;
+			textResult.Text = Constants.Numeric.ZERO_VALUE;
 			TextOverwrite = true;
 			NumDot = false;
 
 			PreserveFormatOnToggle = false;
-			lastUserTypedRaw = ZERO_VALUE;
+			lastUserTypedRaw = Constants.Numeric.ZERO_VALUE;
 			lastActionWasPercent = false;
 		}
 
@@ -746,8 +684,8 @@ namespace CalculatorApp
 		/// </summary>
 		private void ResetCalculationValues()
 		{
-			FirstValue = INITIAL_VALUE;
-			SecondValue = INITIAL_VALUE;
+			FirstValue = Constants.Numeric.INITIAL_VALUE;
+			SecondValue = Constants.Numeric.INITIAL_VALUE;
 			currentOperatorType = OperatorType.NON;
 		}
 
@@ -799,10 +737,10 @@ namespace CalculatorApp
 			{
 				TextOverwrite = true;
 				NumDot = false;
-				textResult.Text = ZERO_VALUE;
+				textResult.Text = Constants.Numeric.ZERO_VALUE;
 
 				PreserveFormatOnToggle = false;
-				lastUserTypedRaw = ZERO_VALUE;
+				lastUserTypedRaw = Constants.Numeric.ZERO_VALUE;
 				lastActionWasPercent = false;
 				return;
 			}
@@ -894,7 +832,7 @@ namespace CalculatorApp
 		private bool IsInputValid(string currentText, string digit)
 		{
 			bool startsWithZeroDot = currentText.StartsWith("0.") || currentText.StartsWith("-0.");
-			int maxDigits = startsWithZeroDot ? MAX_FRACTION_DISPLAY_DIGITS_LEADING_ZERO : MAX_INTEGER_DISPLAY_DIGITS;
+			int maxDigits = startsWithZeroDot ? Constants.Numeric.MAX_FRACTION_DISPLAY_DIGITS_LEADING_ZERO : Constants.Numeric.MAX_INTEGER_DISPLAY_DIGITS;
 
 			string nextText = TextOverwrite ? digit : currentText + digit;
 			int nextLength = nextText.Replace(".", "").Replace("-", "").Length;
@@ -904,7 +842,7 @@ namespace CalculatorApp
 				return false;
 			}
 
-			if (!TextOverwrite && currentText == ZERO_VALUE && digit == ZERO_VALUE && !NumDot)
+			if (!TextOverwrite && currentText == Constants.Numeric.ZERO_VALUE && digit == Constants.Numeric.ZERO_VALUE && !NumDot)
 			{
 				return false;
 			}
@@ -924,19 +862,19 @@ namespace CalculatorApp
 			{
 				case OperatorType.ADD:
 					{
-						return ADD_SYMBOL;
+						return Constants.Symbol.ADD;
 					}
 				case OperatorType.SUBTRACT:
 					{
-						return SUBTRACT_SYMBOL;
+						return Constants.Symbol.SUBTRACT;
 					}
 				case OperatorType.MULTIPLY:
 					{
-						return MULTIPLY_SYMBOL;
+						return Constants.Symbol.MULTIPLY;
 					}
 				case OperatorType.DIVIDE:
 					{
-						return DIVIDE_SYMBOL;
+						return Constants.Symbol.DIVIDE;
 					}
 				default:
 					{
@@ -990,15 +928,15 @@ namespace CalculatorApp
 			}
 			else
 			{
-				if (currentOperatorType == OperatorType.DIVIDE && currentValue == INITIAL_VALUE)
+				if (currentOperatorType == OperatorType.DIVIDE && currentValue == Constants.Numeric.INITIAL_VALUE)
 				{
-					if (FirstValue == INITIAL_VALUE)
+					if (FirstValue == Constants.Numeric.INITIAL_VALUE)
 					{
-						SetErrorState(ERROR_MASSAGE_UNDEFINED);
+						SetErrorState(Constants.ErrorMessage.UNDEFINED);
 					}
 					else
 					{
-						SetErrorState(ERROR_MASSAGE_DIVIDE_BY_ZERO);
+						SetErrorState(Constants.ErrorMessage.DIVIDE_BY_ZERO);
 					}
 					return;
 				}
@@ -1017,8 +955,8 @@ namespace CalculatorApp
 			string currentExpr = (textExpression.Text != null ? textExpression.Text.Trim() : string.Empty);
 
 			if (!string.IsNullOrEmpty(currentExpr) &&
-				!currentExpr.EndsWith(EQUAL_SYMBOL) &&
-				currentExpr.StartsWith(NEGATE_DISPLAY_FUNCTION + "(", StringComparison.Ordinal))
+				!currentExpr.EndsWith(Constants.Symbol.EQUAL) &&
+				currentExpr.StartsWith(Constants.SpecialDisplay.NEGATE_FUNCTION + "(", StringComparison.Ordinal))
 			{
 				textExpression.Text = currentExpr + " " + op;
 				return;
@@ -1039,7 +977,7 @@ namespace CalculatorApp
 			{
 				SecondValue = currentValue;
 				textExpression.Text = string.Format("{0} {1}",
-					FormatNumberForExpression(currentValue), EQUAL_SYMBOL);
+					FormatNumberForExpression(currentValue), Constants.Symbol.EQUAL);
 				FirstValue = currentValue;
 				return currentValue;
 			}
@@ -1058,15 +996,15 @@ namespace CalculatorApp
 				right = SecondValue;
 			}
 
-			if (currentOperatorType == OperatorType.DIVIDE && right == INITIAL_VALUE)
+			if (currentOperatorType == OperatorType.DIVIDE && right == Constants.Numeric.INITIAL_VALUE)
 			{
-				if (left == INITIAL_VALUE)
+				if (left == Constants.Numeric.INITIAL_VALUE)
 				{
-					throw new InvalidOperationException(ERROR_MASSAGE_UNDEFINED);
+					throw new InvalidOperationException(Constants.ErrorMessage.UNDEFINED);
 				}
 				else
 				{
-					throw new InvalidOperationException(ERROR_MASSAGE_DIVIDE_BY_ZERO);
+					throw new InvalidOperationException(Constants.ErrorMessage.DIVIDE_BY_ZERO);
 				}
 			}
 
@@ -1080,22 +1018,22 @@ namespace CalculatorApp
 			string curr = (textExpression.Text != null ? textExpression.Text.Trim() : string.Empty);
 
 			if (!string.IsNullOrEmpty(curr) &&
-				!curr.EndsWith(EQUAL_SYMBOL) &&
-				curr.StartsWith(NEGATE_DISPLAY_FUNCTION + "(", StringComparison.Ordinal))
+				!curr.EndsWith(Constants.Symbol.EQUAL) &&
+				curr.StartsWith(Constants.SpecialDisplay.NEGATE_FUNCTION + "(", StringComparison.Ordinal))
 			{
 				if (curr.EndsWith(opSym))
 				{
-					textExpression.Text = curr + " " + rightExpr + " " + EQUAL_SYMBOL;
+					textExpression.Text = curr + " " + rightExpr + " " + Constants.Symbol.EQUAL;
 				}
 				else
 				{
-					textExpression.Text = curr + " " + EQUAL_SYMBOL;
+					textExpression.Text = curr + " " + Constants.Symbol.EQUAL;
 				}
 			}
 			else
 			{
 				textExpression.Text = string.Format("{0} {1} {2} {3}",
-					leftExpr, opSym, rightExpr, EQUAL_SYMBOL);
+					leftExpr, opSym, rightExpr, Constants.Symbol.EQUAL);
 			}
 
 			return result;
@@ -1107,7 +1045,7 @@ namespace CalculatorApp
 		/// </summary>
 		private decimal CalculatePercent(decimal value)
 		{
-			return value * PERCENT_MULTIPLY;
+			return value * Constants.Numeric.PERCENT_MULTIPLY;
 		}
 
 		/// <summary>
@@ -1152,7 +1090,7 @@ namespace CalculatorApp
 
 				if (string.IsNullOrEmpty(newText) || newText == "-")
 				{
-					textResult.Text = ZERO_VALUE;
+					textResult.Text = Constants.Numeric.ZERO_VALUE;
 					TextOverwrite = true;
 					NumDot = false;
 				}
@@ -1176,7 +1114,7 @@ namespace CalculatorApp
 			DisplayValue = GetCurrentValue();
 			DisplayValue = -DisplayValue;
 			DisplayNumber(DisplayValue, false);
-			IsNegated = true;
+			isNegated = true;
 		}
 
 		/// <summary>
@@ -1212,19 +1150,19 @@ namespace CalculatorApp
 		{
 			string expr = (textExpression.Text != null ? textExpression.Text.Trim() : string.Empty);
 
-			if (expr.EndsWith(EQUAL_SYMBOL))
+			if (expr.EndsWith(Constants.Symbol.EQUAL))
 			{
-				int eq = expr.LastIndexOf(EQUAL_SYMBOL);
+				int eq = expr.LastIndexOf(Constants.Symbol.EQUAL);
 				string body = (eq >= 0 ? expr.Substring(0, eq) : expr).Trim();
 				if (string.IsNullOrEmpty(body)) body = FormatNumberForExpression(FirstValue);
 
-				textExpression.Text = NEGATE_DISPLAY_FUNCTION + "(" + body + ")";
+				textExpression.Text = Constants.SpecialDisplay.NEGATE_FUNCTION + "(" + body + ")";
 				return;
 			}
 
-			if (expr.StartsWith(NEGATE_DISPLAY_FUNCTION + "(", StringComparison.Ordinal))
+			if (expr.StartsWith(Constants.SpecialDisplay.NEGATE_FUNCTION + "(", StringComparison.Ordinal))
 			{
-				textExpression.Text = NEGATE_DISPLAY_FUNCTION + "(" + expr + ")";
+				textExpression.Text = Constants.SpecialDisplay.NEGATE_FUNCTION + "(" + expr + ")";
 			}
 		}
 
@@ -1319,15 +1257,9 @@ namespace CalculatorApp
 		/// </summary>
 		private string FormatExponential(decimal value)
 		{
-			string gFormat = value.ToString("G15", CultureInfo.InvariantCulture);
-			string expString = gFormat.Contains("E")
-				? gFormat
-				: decimal.Parse(gFormat, CultureInfo.InvariantCulture).ToString("E", CultureInfo.InvariantCulture);
-
-			expString = expString.Replace("E+", "e+").Replace("E-", "e-");
-			string[] parts = expString.Split(new char[] { 'e' });
-
-			string mantissa = parts[0].TrimEnd('0');
+			var expString = value.ToString("e", CultureInfo.InvariantCulture); 
+			var parts = expString.Split('e');
+			var mantissa = parts[0].TrimEnd('0');
 			if (mantissa.EndsWith("."))
 			{
 				mantissa = mantissa.TrimEnd('.');
@@ -1341,6 +1273,8 @@ namespace CalculatorApp
 			return mantissa + "e" + exponent;
 		}
 
+		
+
 		/// <summary>
 		/// 数値の大きさが表示可能な桁数を超える場合、指数表記に変換する
 		/// </summary>
@@ -1349,38 +1283,49 @@ namespace CalculatorApp
 			decimal abs = Math.Abs(value);
 			if (abs == 0m)
 			{
-				return ZERO_VALUE;
+				return Constants.Numeric.ZERO_VALUE;
 			}
-
 
 			string fixedStr = value.ToString("0.#############################", CultureInfo.InvariantCulture);
 
 			if (abs >= 1m)
 			{
-
 				int dot = fixedStr.IndexOf('.');
 				bool neg = (fixedStr[0] == '-');
 				int intLen = (dot >= 0 ? dot : fixedStr.Length) - (neg ? 1 : 0);
 
-				if (intLen > MAX_INTEGER_DISPLAY_DIGITS)
+				if (intLen > Constants.Numeric.MAX_INTEGER_DISPLAY_DIGITS)
 				{
 					return FormatExponential(value);
 				}
+
 				return fixedStr;
 			}
 			else
 			{
-
 				int dot = fixedStr.IndexOf('.');
-				int fracLen = (dot >= 0) ? (fixedStr.Length - dot - 1) : 0;
+				int leadingZeros = 0;
 
-				if (fracLen > MAX_FRACTION_DISPLAY_DIGITS_LEADING_ZERO)
+				for (int i = dot + 1; i < fixedStr.Length && fixedStr[i] == '0'; i++)
+				{
+					leadingZeros++;
+				}
+
+				int totalFractionDigits = fixedStr.Length - dot - 1;
+				int significantDigits = fixedStr.TrimStart('0').Replace(".", "").Length;
+
+				if (leadingZeros >=Constants.Numeric.MAX_FRACTION_DISPLAY_DIGITS_LEADING_ZERO ||
+					totalFractionDigits > Constants.Numeric.MAX_TOTAL_FRACTION_DIGITS ||
+					significantDigits > Constants.Numeric.MAX_SIGNIFICANT_DIGITS)
 				{
 					return FormatExponential(value);
 				}
+
 				return fixedStr;
 			}
 		}
+
+
 
 		/// <summary>
 		/// 現在の表示文字列を decimal に変換する
@@ -1397,7 +1342,7 @@ namespace CalculatorApp
 		{
 			if (string.IsNullOrEmpty(text))
 			{
-				return INITIAL_VALUE;
+				return Constants.Numeric.INITIAL_VALUE;
 			}
 
 			string s = text.Replace(",", "");
@@ -1414,17 +1359,17 @@ namespace CalculatorApp
 					}
 					catch
 					{
-						return INITIAL_VALUE;
+						return Constants.Numeric.INITIAL_VALUE;
 					}
 				}
-				return INITIAL_VALUE;
+				return Constants.Numeric.INITIAL_VALUE;
 			}
 
 			if (decimal.TryParse(s, NumberStyles.Any, CultureInfo.InvariantCulture, out dv))
 			{
 				return dv;
 			}
-			return INITIAL_VALUE;
+			return Constants.Numeric.INITIAL_VALUE;
 		}
 
 		/// <summary>
@@ -1469,7 +1414,7 @@ namespace CalculatorApp
 		/// </summary>
 		private bool ExpressionEndsWithEqual()
 		{
-			return textExpression.Text.Length > 0 && textExpression.Text.EndsWith(EQUAL_SYMBOL);
+			return textExpression.Text.Length > 0 && textExpression.Text.EndsWith(Constants.Symbol.EQUAL);
 		}
 
 		/// <summary>
@@ -1504,7 +1449,7 @@ namespace CalculatorApp
 			FontFamily family = textResult.Font.FontFamily;
 			FontStyle style = textResult.Font.Style;
 
-			while (size > MIN_FONT_SIZE_LIMIT)
+			while (size > Constants.FontSize.MIN_LIMIT)
 			{
 				using (Font trial = new Font(family, size, style))
 				{
@@ -1523,13 +1468,13 @@ namespace CalculatorApp
 						return;
 					}
 				}
-				size -= FONT_SIZE_REDUCTION_STEP;
+				size -= Constants.FontSize.SIZE_EPSILON;
 			}
 
-			if (Math.Abs(textResult.Font.Size - MIN_FONT_SIZE_LIMIT) > 0.1f)
+			if (Math.Abs(textResult.Font.Size - Constants.FontSize.MIN_LIMIT) > Constants.FontSize.REDUCTION_STEP)
 			{
 				Font oldFinal = textResult.Font;
-				textResult.Font = new Font(family, MIN_FONT_SIZE_LIMIT, style);
+				textResult.Font = new Font(family, Constants.FontSize.MIN_LIMIT, style);
 				oldFinal.Dispose();
 			}
 		}
@@ -1552,10 +1497,10 @@ namespace CalculatorApp
 		{
 			textResult.Text = message;
 
-			float sz = ERROR_FONT_SIZE;
-			if (sz < MIN_FONT_SIZE_LIMIT)
+			float sz = Constants.FontSize.ERROR_MESSAGE;
+			if (sz < Constants.FontSize.MIN_LIMIT)
 			{
-				sz = MIN_FONT_SIZE_LIMIT;
+				sz = Constants.FontSize.MIN_LIMIT;
 			}
 			textResult.Font = new Font(textResult.Font.FontFamily, sz, textResult.Font.Style);
 
@@ -1589,19 +1534,19 @@ namespace CalculatorApp
 		/// </summary>
 		private void ResetCalculatorState()
 		{
-			FirstValue = INITIAL_VALUE;
-			SecondValue = INITIAL_VALUE;
+			FirstValue = Constants.Numeric.INITIAL_VALUE;
+			SecondValue = Constants.Numeric.INITIAL_VALUE;
 			currentOperatorType = OperatorType.NON;
 			textExpression.Text = "";
-			textResult.Text = ZERO_VALUE;
+			textResult.Text = Constants.Numeric.ZERO_VALUE;
 			TextOverwrite = true;
 			NumDot = false;
 			IsErrorState = false;
 			IsClearEntry = false;
-			DisplayValue = INITIAL_VALUE;
+			DisplayValue = Constants.Numeric.INITIAL_VALUE;
 
 			PreserveFormatOnToggle = false;
-			lastUserTypedRaw = ZERO_VALUE;
+			lastUserTypedRaw = Constants.Numeric.ZERO_VALUE;
 			lastActionWasPercent = false;
 			ClearedExprAfterEqual = false;
 
