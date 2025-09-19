@@ -335,20 +335,26 @@
 			// 
 			// textResult
 			// 
+			this.textResult.BorderStyle = System.Windows.Forms.BorderStyle.None;
 			this.textResult.Font = new System.Drawing.Font("Segoe UI", 36F, System.Drawing.FontStyle.Bold);
-			this.textResult.Location = new System.Drawing.Point(4, 107);
+			this.textResult.Location = new System.Drawing.Point(12, 107);
 			this.textResult.Name = "textResult";
-			this.textResult.Size = new System.Drawing.Size(300, 71);
+			this.textResult.ReadOnly = true;
+			this.textResult.Size = new System.Drawing.Size(280, 64);
 			this.textResult.TabIndex = 3;
+			this.textResult.TextAlign = System.Windows.Forms.HorizontalAlignment.Right;
 			this.textResult.TextChanged += new System.EventHandler(this.textResult_TextChanged);
 			// 
 			// textExpression
 			// 
+			this.textExpression.BorderStyle = System.Windows.Forms.BorderStyle.None;
 			this.textExpression.Font = new System.Drawing.Font("Segoe UI", 10F);
-			this.textExpression.Location = new System.Drawing.Point(4, 76);
+			this.textExpression.Location = new System.Drawing.Point(12, 76);
 			this.textExpression.Name = "textExpression";
-			this.textExpression.Size = new System.Drawing.Size(300, 25);
+			this.textExpression.ReadOnly = true;
+			this.textExpression.Size = new System.Drawing.Size(280, 18);
 			this.textExpression.TabIndex = 2;
+			this.textExpression.TextAlign = System.Windows.Forms.HorizontalAlignment.Right;
 			this.textExpression.TextChanged += new System.EventHandler(this.textExpression_TextChanged);
 			// 
 			// Form1
