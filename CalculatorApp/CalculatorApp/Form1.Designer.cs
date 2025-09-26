@@ -1,6 +1,6 @@
 ﻿namespace CalculatorApp
 {
-	partial class Form1
+	partial class 電卓
 	{
 		/// <summary>
 		/// 必要なデザイナー変数です。
@@ -357,7 +357,7 @@
 			this.textExpression.TextAlign = System.Windows.Forms.HorizontalAlignment.Right;
 			this.textExpression.TextChanged += new System.EventHandler(this.textExpression_TextChanged);
 			// 
-			// Form1
+			// 電卓
 			// 
 			this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 12F);
 			this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
@@ -367,8 +367,8 @@
 			this.Controls.Add(this.btnTopMost);
 			this.Controls.Add(this.tableLayoutPanel1);
 			this.Controls.Add(this.button1);
-			this.Name = "Form1";
-			this.Text = "Form1";
+			this.Name = "電卓";
+			this.Text = "電卓";
 			this.Load += new System.EventHandler(this.Form1_Load);
 			this.tableLayoutPanel1.ResumeLayout(false);
 			this.ResumeLayout(false);
